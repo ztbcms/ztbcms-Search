@@ -12,7 +12,7 @@ return array(
 	//模块简介
 	'introduce' => '全站内容信息搜索',
 	//模块介绍地址
-	'address' => 'http://www.ztbcms.com',
+	'address' => 'http://doc.ztbcms.com/module/search/',
 	//模块作者
 	'author' => 'ZtbCMS',
 	//作者地址
