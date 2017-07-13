@@ -14,7 +14,7 @@ CREATE TABLE `cms_search` (
   KEY `id` (`id`,`catid`,`adddate`) USING BTREE,
   KEY `modelid` (`modelid`,`catid`),
   FULLTEXT KEY `data` (`data`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='全站搜索数据表';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='全站搜索数据表';
 -- ----------------------------
 -- Table structure for cms_search_keyword
 -- ----------------------------
