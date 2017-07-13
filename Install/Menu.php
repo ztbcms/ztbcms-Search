@@ -17,6 +17,12 @@ return array(
         //子菜单列表
         "child" => array(
             array(
+                "route" => "Search/Search/index",
+                "type" => 1,
+                "status" => 1,
+                "name" => "搜索配置",
+            ),
+            array(
                 "route" => "Search/Search/create",
                 "type" => 1,
                 "status" => 1,
