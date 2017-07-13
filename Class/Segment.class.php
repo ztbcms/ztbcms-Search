@@ -5,7 +5,7 @@
  * @author wangcanjia
  *
  */
-define("CHARSET", "utf-8");
+//define("CHARSET", "utf-8");
 
 class Segment {
 
