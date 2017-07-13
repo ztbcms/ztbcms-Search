@@ -70,19 +70,19 @@ class IndexController extends Base {
 			$cachetime = (int) $this->config['cachetime'];
 			//按时间搜索
 			if ($time == 'day') {
-//一天
+                //一天
 				$search_time = time() - 86400;
 				$where['adddate'] = array("GT", $search_time);
 			} elseif ($time == 'week') {
-//一周
+                //一周
 				$search_time = time() - 604800;
 				$where['adddate'] = array("GT", $search_time);
 			} elseif ($time == 'month') {
-//一月
+                //一月
 				$search_time = time() - 2592000;
 				$where['adddate'] = array("GT", $search_time);
 			} elseif ($time == 'year') {
-//一年
+                //一年
 				$search_time = time() - 31536000;
 				$where['adddate'] = array("GT", $search_time);
 			} else {
