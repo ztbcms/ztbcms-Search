@@ -42,7 +42,7 @@ class SearchModel extends Model {
 
 	/**
 	 * 更新搜索配置
-	 * @param type $config 配置数据
+	 * @param array $config 配置数据
 	 * @return boolean 成功返回true
 	 */
 	public function search_config($config) {
@@ -74,7 +74,7 @@ class SearchModel extends Model {
 	 */
 	public function discuzSegment($title = '', $content = '', $encode = 'utf-8') {
 		if (empty($title)) {
-			return false;
+			return [];
 		}
 		//标题处理
 		$title = rawurlencode(strip_tags(trim($title)));
@@ -99,13 +99,13 @@ class SearchModel extends Model {
 		if (count($data) > 0) {
 			return $data;
 		} else {
-			return false;
+			return [];
 		}
 	}
 
 	/**
 	 * 使用内置本地分词处理进行分词
-	 * @param type $data
+	 * @param array $data
 	 * @return boolean
 	 */
 	public function segment($data) {
@@ -125,8 +125,8 @@ class SearchModel extends Model {
 
 	/**
 	 * 搜索数据入库处理
-	 * @param type $data 搜索数据
-	 * @param type $text 附带数据，例如标题 关键字
+	 * @param string $data 搜索数据
+	 * @param string $text 附带数据，例如标题 关键字
 	 * @return string
 	 */
 	private function dataHandle($data, $text = '') {
@@ -155,11 +155,11 @@ class SearchModel extends Model {
 
 	/**
 	 * 添加搜索数据
-	 * @param type $id 信息id
-	 * @param type $catid 栏目id
-	 * @param type $modelid 模型id
-	 * @param type $inputtime 发布时间
-	 * @param type $data 数据
+	 * @param string|int $id 信息id
+	 * @param string $catid 栏目id
+	 * @param string $modelid 模型id
+	 * @param int $inputtime 发布时间
+	 * @param string $data 数据
 	 * @return boolean
 	 */
 	public function searchAdd($id, $catid, $modelid, $inputtime, $data, $text = '') {
@@ -182,15 +182,17 @@ class SearchModel extends Model {
 		return false;
 	}
 
-	/**
-	 * 更新搜索数据
-	 * @param type $id 信息id
-	 * @param type $catid 栏目id
-	 * @param type $modelid 模型id
-	 * @param type $inputtime 发布时间
-	 * @param type $data 数据
-	 * @return boolean
-	 */
+    /**
+     * 更新搜索数据
+     *
+     * @param string|int $id        信息id
+     * @param string     $catid     栏目id
+     * @param string     $modelid   模型id
+     * @param int        $inputtime 发布时间
+     * @param string     $data      数据
+     * @param string     $text
+     * @return bool
+     */
 	public function searchSave($id, $catid, $modelid, $inputtime, $data, $text = '') {
 		if (!$id || !$catid || !$modelid || !$data) {
 			return false;
@@ -218,9 +220,9 @@ class SearchModel extends Model {
 
 	/**
 	 * 删除搜索数据
-	 * @param type $id 信息id
-	 * @param type $catid 栏目id
-	 * @param type $modelid 模型id
+	 * @param string|int $id 信息id
+	 * @param string $catid 栏目id
+	 * @param string $modelid 模型id
 	 * @return boolean
 	 */
 	public function searchDelete($id, $catid, $modelid) {
@@ -237,10 +239,10 @@ class SearchModel extends Model {
 
 	/**
 	 * 更新搜索数据 api 接口
-	 * @param type $id 信息id
-	 * @param type $data 数据 数据分为 system，和model
-	 * @param type $modelid 模型id
-	 * @param type $action 动作
+	 * @param string|int $id 信息id
+	 * @param array $data 数据 数据分为 system，和model
+	 * @param string $modelid 模型id
+	 * @param string $action 动作
 	 */
 	public function search_api($id = 0, $data = array(), $modelid, $action = 'add') {
 		$fulltextcontent = "";
@@ -272,7 +274,7 @@ class SearchModel extends Model {
 				}
 			}
 		} elseif ($action == 'delete') {
-//删除动作
+            //删除动作
 			$catid = $data['catid'];
 			$this->searchDelete($id, $catid, $modelid);
 		}

@@ -137,6 +137,7 @@ class IndexController extends Base {
 				$res = $cl->Query($q, "*");
 				//信息总数
 				$count = $res['total'];
+                $result_sphinx = [];
 				//如果结果不为空
 				if (!empty($res['matches'])) {
 					$result_sphinx = $res['matches'];
