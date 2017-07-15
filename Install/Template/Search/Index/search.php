@@ -21,7 +21,7 @@ var GV = {
   <p class="user" id="s_user"></p>
 </div>
 <div id="header">
-  <h1 id="rLogo"><a href="{$config_siteurl}" title="到首页"><img src="{$config_siteurl}statics/images/hei_logo.png" alt="到搜搜首页" /></a></h1>
+    <h1 id="rLogo"><a href="{$config_siteurl}" title="到首页"><img src="{$config_siteurl}statics/images/logo.gif" alt="到搜搜首页" /></a></h1>
   <div class="sBox">
     <form name="flpage" action="{:U('Search/Index/index')}" method="post">
       <input type="hidden" name="g" value="Search" />
