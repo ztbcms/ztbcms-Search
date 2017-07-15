@@ -234,6 +234,7 @@ class IndexController extends Base {
 				$relation = M('SearchKeyword')->where($map)->select();
 				$this->assign('relation', $relation);
 			}
+            $source = [];
 			foreach ($this->config['modelid'] as $modelid) {
 				$source[$modelid] = array(
 					"name" => $model[$modelid]['name'],
