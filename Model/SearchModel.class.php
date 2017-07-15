@@ -263,7 +263,7 @@ class SearchModel extends Model {
 			}
 			$fulltextcontent .= $data['title'] . $data['keywords'];
 			//添加到搜索数据表
-			$inputtime = (int) $data['inputtime'];
+			$inputtime = time();
 			$catid = (int) $data['catid'];
 			if ($action == 'add') {
 				$this->searchAdd($id, $catid, $modelid, $inputtime, $fulltextcontent, $data['title'] . $data['keywords']);
