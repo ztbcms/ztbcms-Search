@@ -7,7 +7,7 @@ use System\Service\BaseService;
 
 class SearchService extends BaseService {
 
-    static function getSetting(){
+    static function getSetting() {
         $Search = M('Module')->where(array('module' => 'Search'))->find();
         $now_config = unserialize($Search['setting']);
         $setting = [
@@ -33,5 +33,50 @@ class SearchService extends BaseService {
         return $setting;
     }
 
+    static function search($q = '', $page = 1) {
+        if(empty($q)){
+            return self::createReturn(true, null, '请输入关键字');
+        }
+        $config = self::getSetting();
+        $cachetime = $config['cachetime'];
+        $pagesize = $config['pagesize'];
+        //排序
+        $order = array("adddate" => "DESC", "searchid" => "DESC");
+        //分词结果
+        if ($config['dzsegment']) {
+            $segment_q = D('Search/Search')->discuzSegment($q);
+        } else {
+            $segment_q = D('Search/Search')->segment($q);
+        }
+        if (!empty($segment_q[0]) && $config['segment']) {
+            $words = $segment_q;
+            $segment_q = implode(' ', $segment_q);
+            $where['_string'] = " MATCH (`data`) AGAINST ('{$segment_q}' IN BOOLEAN MODE) ";
+        } else {
+            //这种搜索最不行
+            $likeList = explode(' ', $q);
+            if (count($likeList) > 1) {
+                foreach ($likeList as $k => $rs) {
+                    $likeList[$k] = "%{$rs}%";
+                }
+                $where['data'] = array('like', $likeList, 'or');
+            } else {
+                $where['data'] = array('like', "%{$q}%");
+            }
+            $words = array($q);
+        }
+        //查询结果缓存
+        if ($cachetime) {
+            //统计
+            $count = M('Search')->where($where)->cache(true, $cachetime)->count();
+            $page = page($count, $pagesize);
+            $result = M('Search')->where($where)->cache(true, $cachetime)->page($page)->limit($pagesize)->order($order)->select();
+        } else {
+            $count = M('Search')->where($where)->count();
+            $page = page($count, $pagesize);
+            $result = M('Search')->where($where)->page($page)->limit($pagesize)->order($order)->select();
+        }
 
+        return self::createReturn(true, $result);
+    }
 } 
