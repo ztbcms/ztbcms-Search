@@ -7,6 +7,7 @@
 namespace Search\Model;
 
 use Common\Model\Model;
+use Search\Service\SearchService;
 
 class SearchModel extends Model {
 
@@ -15,29 +16,7 @@ class SearchModel extends Model {
 	 * @return boolean
 	 */
 	public function search_cache() {
-		$Search = M('Module')->where(array('module' => 'Search'))->find();
-		if (!$Search) {
-			return false;
-		}
-		$Search['setting'] = unserialize($Search['setting']);
-		//是否启用相关搜索
-		$Search['setting']['relationenble'] = isset($Search['setting']['relationenble']) ? $Search['setting']['relationenble'] : 1;
-		//是否启用PHP简易分词
-		$Search['setting']['segment'] = isset($Search['setting']['segment']) ? $Search['setting']['segment'] : 1;
-		//搜索结果每页显示条数
-		$Search['setting']['pagesize'] = isset($Search['setting']['pagesize']) ? $Search['setting']['pagesize'] : 10;
-		//搜索结果缓存时间
-		$Search['setting']['cachetime'] = isset($Search['setting']['cachetime']) ? $Search['setting']['cachetime'] : 0;
-		//是否使用DZ在线分词接口
-		$Search['setting']['dzsegment'] = isset($Search['setting']['dzsegment']) && $Search['setting']['dzsegment'] ? true : false;
-		//是否启用sphinx全文索引
-		$Search['setting']['sphinxenable'] = isset($Search['setting']['sphinxenable']) ? $Search['setting']['sphinxenable'] : 0;
-		//sphinx服务器主机地址
-		$Search['setting']['sphinxhost'] = isset($Search['setting']['sphinxhost']) ? $Search['setting']['sphinxhost'] : '';
-		//sphinx服务器端口号
-		$Search['setting']['sphinxport'] = isset($Search['setting']['sphinxport']) ? $Search['setting']['sphinxport'] : '';
-		cache('Search_config', $Search['setting']);
-		return $Search['setting'];
+		return SearchService::getSetting();
 	}
 
 	/**
