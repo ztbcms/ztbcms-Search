@@ -7,19 +7,25 @@
 namespace Search\Controller;
 
 use Common\Controller\AdminBase;
+use Search\Model\SearchModel;
+use Search\Service\SearchService;
 
 class SearchController extends AdminBase {
 
 	//搜索配置
 	protected $config;
 	//数据对象
+    /**
+     * @var SearchModel
+     */
 	private $db;
 
 	//初始化
 	protected function _initialize() {
 		parent::_initialize();
 		$this->db = D("Search/Search");
-		$this->config = cache('Search_config');
+		$this->config = SearchService::getSetting();
+
 	}
 
 	//搜索相关配置

@@ -11,9 +11,18 @@ use Search\Service\SearchService;
 
 class SearchModel extends Model {
 
+    /**
+     * 内置分词
+     */
+    const SEGMENT_DEFAULT = 'default';
+    /**
+     * discuz 分词
+     */
+    const SEGMENT_DISCUZ = 'discuz';
+
 	/**
 	 * 生成缓存
-	 * @return boolean
+	 * @return array
 	 */
 	public function search_cache() {
 		return SearchService::getSetting();

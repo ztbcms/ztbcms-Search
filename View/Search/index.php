@@ -54,18 +54,15 @@
           <td> 是<input type="radio" name="setting[relationenble]"  class="input-radio" <if condition=" $config['relationenble'] eq 1 ">checked</if> value='1'>
             否<input type="radio" name="setting[relationenble]"  class="input-radio" <if condition=" $config['relationenble'] eq 0 ">checked</if> value='0'> <span class="gray">（提示：此项功能会增大数据库压力！）</span></td>
         </tr>
-        <tr>
-          <th width="200">是否启用PHP简易分词</th>
-          <td> 是<input type="radio" name="setting[segment]"  class="input-radio" <if condition=" $config['segment'] eq 1 ">checked</if> value='1'>
-            否<input type="radio" name="setting[segment]"  class="input-radio" <if condition=" $config['segment'] eq 0 ">checked</if> value='0'> <span class="gray">（提示：只有在关闭Sphinx全文索引有效！<b>关闭</b>此项后将无法使用MySQL全文索引！）</span></td>
-        </tr>
+
         <tr>
           <th width="200">分词接口</th>
-          <td> <select name="setting[dzsegment]">
-          <option value='0' <if condition=" !$config['dzsegment'] ">selected</if>>使用内置简单分词接口</option>
-          <option value="1" <if condition=" $config['dzsegment'] ">selected</if>>使用Discuz在线分词接口</option>
-          </select>
-          <span class="gray">（提示：Discuz在线分词接口速度可能受网络影响！）</span>
+          <td>
+              <select name="setting[segment]">
+                  <option value='default' <if condition=" $config['segment'] == 'default' ">selected</if>>使用内置简单分词接口</option>
+                  <option value="discuz" <if condition=" $config['segment'] == 'discuz' ">selected</if>>使用Discuz在线分词接口</option>
+              </select>
+              <span class="gray">（提示：Discuz在线分词接口速度可能受网络影响！）</span>
           </td>
         </tr>
         <tr>
