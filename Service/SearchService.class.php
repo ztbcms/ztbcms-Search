@@ -33,6 +33,7 @@ class SearchService extends BaseService {
         ];
 
         cache('Search_config', $setting);
+
         return $setting;
     }
 
@@ -43,7 +44,7 @@ class SearchService extends BaseService {
      * @return array
      */
     static function search($q = '', $page = 1, $pagesize = 0) {
-        if(empty($q)){
+        if (empty($q)) {
             return self::createReturn(true, null, '请输入关键字');
         }
         $config = self::getSetting();
@@ -78,14 +79,21 @@ class SearchService extends BaseService {
         if ($cachetime) {
             //统计
             $count = M('Search')->where($where)->cache(true, $cachetime)->count();
-//            $page = page($count, $pagesize);
-            $result = M('Search')->where($where)->cache(true, $cachetime)->page($page)->limit($pagesize)->order($order)->select();
+            $result = M('Search')->where($where)->cache(true,
+                $cachetime)->page($page)->limit($pagesize)->order($order)->select();
         } else {
             $count = M('Search')->where($where)->count();
-//            $page = page($count, $pagesize);
             $result = M('Search')->where($where)->page($page)->limit($pagesize)->order($order)->select();
         }
         $total_pages = ceil($count / $pagesize);
-        return self::createReturnList(true, $result, $page, $pagesize, $count, $total_pages);
+
+        return self::createReturn(true, [
+            'items' => $result,
+            'page' => $page,
+            'limit' => $pagesize,
+            'total_items' => $count,
+            'total_pages' => $total_pages,
+            'words' => $words
+        ]);
     }
 } 

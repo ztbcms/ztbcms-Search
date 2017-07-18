@@ -7,6 +7,7 @@
 namespace Search\Controller;
 
 use Common\Controller\Base;
+use Search\Service\SearchService;
 
 class IndexController extends Base {
 
@@ -25,6 +26,7 @@ class IndexController extends Base {
 		$seo = seo();
 		$this->assign('seo', $seo);
 		$q = I('request.q', '', 'trim');
+		$_page = I('page');
 		if ($q) {
 			G('search');
 			if (empty($q)) {
@@ -161,40 +163,12 @@ class IndexController extends Base {
 				$page = page($count, $pagesize);
 				$this->assign("Page", $page->show());
 			} else {
-				//分词结果
-				if ($this->config['dzsegment']) {
-					$segment_q = D('Search/Search')->discuzSegment($q);
-				} else {
-					$segment_q = D('Search/Search')->segment($q);
-				}
-				if (!empty($segment_q[0]) && $this->config['segment']) {
-					$words = $segment_q;
-					$segment_q = implode(' ', $segment_q);
-					$where['_string'] = " MATCH (`data`) AGAINST ('{$segment_q}' IN BOOLEAN MODE) ";
-				} else {
-					//这种搜索最不行
-					$likeList = explode(' ', $q);
-					if (count($likeList) > 1) {
-						foreach ($likeList as $k => $rs) {
-							$likeList[$k] = "%{$rs}%";
-						}
-						$where['data'] = array('like', $likeList, 'or');
-					} else {
-						$where['data'] = array('like', "%{$q}%");
-					}
-					$words = array($q);
-				}
-				//查询结果缓存
-				if ($cachetime) {
-					//统计
-					$count = M('Search')->where($where)->cache(true, $cachetime)->count();
-					$page = page($count, $pagesize);
-					$result = M('Search')->where($where)->cache(true, $cachetime)->limit($page->firstRow . ',' . $page->listRows)->order($order)->select();
-				} else {
-					$count = M('Search')->where($where)->count();
-					$page = page($count, $pagesize);
-					$result = M('Search')->where($where)->limit($page->firstRow . ',' . $page->listRows)->order($order)->select();
-				}
+				//分词 搜索
+                $search_result = SearchService::search($q, $_page)['data'];
+                $words = $search_result['words'];
+                $result = $search_result['items'];
+                $count = $search_result['total_items'];
+                $page = page($search_result['total_items'], $search_result['limit']);
 				$this->assign('Page', $page->show());
 			}
 			//搜索结果处理
